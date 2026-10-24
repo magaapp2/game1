@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل اللعبة - المصادقة للتحميل</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        .card {
+            background-color: #1e293b;
+            border-radius: 16px;
+            max-width: 420px;
+            width: 100%;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .game-img {
+            width: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        .game-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-bottom: 12px;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            background-color: #0f172a;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #f1f5f9;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .notice-box {
+            background-color: #1e1b4b;
+            border: 1px solid #4338ca;
+            color: #c7d2fe;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+        /* تصميم رابط الرابط والحاوية بالكامل */
+        #download-link-btn {
+            display: none;
+            width: 100%;
+        }
+        .download-btn {
+            background-color: #16a34a;
+            display: block;
+            width: 100%;
+        }
+        .download-btn:hover {
+            background-color: #15803d;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+        .guide-box {
+            display: none;
+            margin-top: 15px;
+            background-color: #451a03;
+            border: 1px solid #b45309;
+            color: #fef3c7;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: right;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+   <div class="card">
+        <img src="https://i.ytimg.com/vi/A68Acjk_CvE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLC0IFvL3C6VRbTfCsg-uFG-oGfp3A" alt="صورة اللعبة" class="game-img">
+        
+        <div class="game-title">لعبة تاكسي إسكندرية</div>
+        
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-value">🎮 v2.0</span>
+                <span class="stat-label">الإصدار</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">📦 61 MB</span>
+                <span class="stat-label">الحجم</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">⬇️ +300K</span>
+                <span class="stat-label">التنزيلات</span>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            📌 <strong>تنويه:</strong> لتفعيل زر التحميل المباشر والتأكد من أمان جهازك، يلزم السماح بالتنبيهات للاشتراك في خدمات التحديثات
+        </div>
+
+        <!-- زر طلب الإشعارات وتأكيد الهوية -->
+        <button id="action-btn" class="btn" onclick="subscribeUser()">إضغط للسماح وتحميل اللعبة</button>
+
+        <!-- زر التحميل الفعلي (يظهر فقط بعد تفعيل الإشعارات) -->
+        <a id="download-link-btn" href="https://appdowntele.blogspot.com/p/stores2.html?R=2" target="_blank" style="text-decoration: none;">
+            <button class="btn download-btn">📥 تحميل اللعبة الآن (مباشر)</button>
+        </a>
+
+        <div id="status-text" class="status"></div>
+
+        <div id="guide-box" class="guide-box">
+            <strong>📌 كيف تقوم بالسماح بالإشعارات يدويًا؟</strong><br>
+            1. اضغط على رمز القفل 🔒 أو الإعدادات بجانب رابط الموقع فوق.<br>
+            2. اختر <strong>أذونات الموقع (Site settings)</strong>.<br>
+            3. قم بـ <strong>السماح (Allow)</strong> لخيار الإشعارات (Notifications).<br>
+            4. حاول مجدداً.
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCH83QJQLQgxFidFwRRJmPepVh3DhmHfg8",
+            authDomain: "megafrp-41498.firebaseapp.com",
+            projectId: "megafrp-41498",
+            storageBucket: "megafrp-41498.firebasestorage.app",
+            messagingSenderId: "894020727561",
+            appId: "1:894020727561:web:b81dd580e872a64e7019d8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+
+        // إظهار زر التحميل وإخفاء زر الاشتراك
+        function showDownloadButton() {
+            const actionBtn = document.getElementById('action-btn');
+            const downloadLinkBtn = document.getElementById('download-link-btn');
+            const statusText = document.getElementById('status-text');
+
+            if (actionBtn) actionBtn.style.display = 'none';
+            if (downloadLinkBtn) downloadLinkBtn.style.setProperty('display', 'block', 'important');
+            if (statusText) statusText.innerText = "🎉 تم تفعيل الإشعارات بنجاح! زر التحميل جاهز الآن.";
+        }
+
+        async function registerAndSaveToken() {
+            const statusText = document.getElementById('status-text');
+            try {
+                statusText.innerText = "جاري تسجيل الخدمة...";
+                const registration = await navigator.serviceWorker.register('/game1/firebase-messaging-sw.js', {
+                    scope: '/game1/'
+                });
+                
+                await navigator.serviceWorker.ready;
+
+                const currentToken = await getToken(messaging, { 
+                    vapidKey: 'BJb3XGZdu2yqSuRrcNiRKqnzKK76OMmk450nrG0WmA4gCLfunnK6ZhZxmmUzzonlSNKb0FxWPDGV47_LVr04idE',
+                    serviceWorkerRegistration: registration 
+                });
+
+                if (currentToken) {
+                    statusText.innerText = "جاري الحفظ في السيرفر...";
+
+                    await fetch('https://script.google.com/macros/s/AKfycbwA94uA_QmGzXXDjpnFbw859jzs1cxTrgNWG4M83BWKy4S3tluhZmIddtPmnjnRxLQgFw/exec', {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token: currentToken })
+                    });
+
+                    showDownloadButton();
+                } else {
+                    statusText.innerText = "⚠️ فشل في إيجاد معرف الاشتراك.";
+                }
+            } catch (err) {
+                statusText.innerText = "❌ حدث خطأ: " + err.message;
+            }
+        }
+
+        async function subscribeUser() {
+            const statusText = document.getElementById('status-text');
+            const guideBox = document.getElementById('guide-box');
+            const actionBtn = document.getElementById('action-btn');
+
+            guideBox.style.display = 'none';
+
+            if (Notification.permission === 'granted') {
+                await registerAndSaveToken();
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                statusText.innerText = "❌ يرجى السماح من إعدادات المتصفح ليظهر لك زر التحميل.";
+                guideBox.style.display = 'block';
+                return;
+            }
+
+            try {
+                actionBtn.innerText = "جاري التحقق...";
+                const permission = await Notification.requestPermission();
+
+                if (permission === 'granted') {
+                    await registerAndSaveToken();
+                } else {
+                    statusText.innerText = "❌ يجب الموافقة على طلب الإشعارات لإظهار زر تحميل اللعبة.";
+                    actionBtn.innerText = "إضغط للسماح وتحميل اللعبة";
+                }
+            } catch (err) {
+                statusText.innerText = "❌ حدث خطأ: " + err.message;
+                actionBtn.innerText = "إضغط للسماح وتحميل اللعبة";
+            }
+        }
+
+        window.subscribeUser = subscribeUser;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (Notification.permission === 'granted') {
+                showDownloadButton();
+            }
+        });
+    </script>
+</body>
+</html>
