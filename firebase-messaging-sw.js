@@ -25,7 +25,7 @@ messaging.onBackgroundMessage((payload) => {
 
     const options = {
         body: body,
-        icon: "https://i.imgur.com/71Qo0vx.png",
+        icon: "https://images.icon-icons.com/2136/PNG/512/google_games_icon_131690.png",
         image: image,
         data: {
             url: targetUrl
