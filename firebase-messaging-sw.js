@@ -12,30 +12,39 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// استقبال الرسالة في الخلفية وعرضها يدوياً لضمان تمرير رابط النقر بدقة
+// استقبال الإشعار وقراءة البيانات المرسلة من البايثون فقط
 messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] Received background message: ', payload);
 
-    const title = payload.data.title || "تحديث جديد";
+    const customData = payload.data || {};
+    
+    const title = customData.title || "تحديث جديد";
+    const body = customData.body || "";
+    const image = customData.image || "";
+    const targetUrl = customData.url; // الرابط القادم من البايثون حصرياً
+
     const options = {
-        body: payload.data.body || "",
-        icon: payload.data.icon || "",
-        image: payload.data.image || "",
+        body: body,
+        icon: "https://i.imgur.com/71Qo0vx.png",
+        image: image,
         data: {
-            url: payload.data.url || ""
+            url: targetUrl
         }
     };
 
     self.registration.showNotification(title, options);
 });
 
-// الحدث المسؤول عن فتح الرابط عند النقر على الإشعار
+// فتح الرابط المرسل من البايثون بدقة عند النقر
 self.addEventListener('notificationclick', function(event) {
-    event.notification.close(); // إغلاق الإشعار
+    event.notification.close(); 
 
-    var targetUrl = event.notification.data && event.notification.data.url 
-        ? event.notification.data.url 
-        : "https://appdowntele.blogspot.com/p/stores2.html?R=2";
+    // جلب الرابط من الـ payload المُرسل من البايثون حصرياً
+    var targetUrl = event.notification.data ? event.notification.data.url : null;
+
+    if (!targetUrl) {
+        return; // لو مفيش رابط مرسل، لا تقم بأي إجراء لتجنب فتح روابط خاطئة
+    }
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
