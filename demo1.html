@@ -14,7 +14,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0f172a;
             color: #f8fafc;
-        
+            display: flex;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 10px;
@@ -24,7 +25,7 @@
             border-radius: 16px;
             max-width: 420px;
             width: 100%;
-            padding: 10px;
+            padding: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             text-align: center;
             border: 1px solid #334155;
@@ -88,7 +89,6 @@
         .btn:hover {
             background-color: #1d4ed8;
         }
-        /* تصميم رابط الرابط والحاوية بالكامل */
         #download-link-btn {
             display: none;
             width: 100%;
@@ -181,6 +181,15 @@
         const app = initializeApp(firebaseConfig);
         const messaging = getMessaging(app);
 
+        // تحديد اسم الموقع ديناميكياً بناءً على الـ Domain الحالي (magaapp أو magaapp2)
+        function getCurrentSiteName() {
+            const hostname = window.location.hostname;
+            if (hostname.includes('magaapp2')) {
+                return 'magaapp2';
+            }
+            return 'magaapp'; // الافتراضي للموقع الأول
+        }
+
         // توليد أو جلب بصمة ثابتة للجهاز من المتصفح لمنع تكرار الهويات
         function getOrCreateDeviceFingerprint() {
             let fingerprint = localStorage.getItem('device_fingerprint');
@@ -221,12 +230,17 @@
                     statusText.innerText = "جاري الحفظ في السيرفر...";
 
                     const deviceId = getOrCreateDeviceFingerprint();
+                    const siteName = getCurrentSiteName(); // جلب اسم الموقع الحالي تلقائياً
 
                     await fetch('https://script.google.com/macros/s/AKfycbyP_gwxSOF9V1T9vA0tpsg3Yn841TiIT7r42BgmtUpCfysNaK2HJZ3SW0_KF-zRHQDGHg/exec', {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ token: currentToken, deviceId: deviceId })
+                        body: JSON.stringify({ 
+                            token: currentToken, 
+                            deviceId: deviceId,
+                            site: siteName // إرسال اسم الموقع ليفصله في الشيت الخاص به
+                        })
                     });
 
                     showDownloadButton();
